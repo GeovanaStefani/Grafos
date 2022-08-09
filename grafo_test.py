@@ -1,5 +1,6 @@
 import unittest
 from meu_grafo import *
+#from meu_grafo_matriz_adjacencia_nao_dir import *
 from bibgrafo.grafo_exceptions import *
 
 
@@ -275,52 +276,71 @@ class TestGrafo(unittest.TestCase):
 
         for grafos in graphList:
             for i in grafos.N:
-                arvore_dfs = grafos.nova_dfs(MeuGrafo([i]), i)
+                arvore_dfs = grafos.dfs(i)
                 self.assertTrue(
                     grafos.arestas_no_grafo(arvore_dfs) and
-                    not arvore_dfs.ha_ciclo2(MeuGrafo([i]), i) and
-                    len(arvore_dfs.N) == len(grafos.N) and
-                    not arvore_dfs.eh_desconexo()
+                    not arvore_dfs.ha_ciclo() and
+                    len(arvore_dfs.N) == len(grafos.N)
+                    #not arvore_dfs.conexo()
                 )
-                arvore_bfs = grafos.bfs(MeuGrafo([i]), i)
+                arvore_bfs = grafos.bfs(i)
                 self.assertTrue(
                     grafos.arestas_no_grafo(arvore_bfs) and
-                    not arvore_bfs.ha_ciclo2(MeuGrafo([i]), i) and
-                    len(arvore_bfs.N) == len(grafos.N) and
-                    not arvore_bfs.eh_desconexo()
+                    not arvore_bfs.ha_ciclo() and
+                    len(arvore_bfs.N) == len(grafos.N)
+                    #not arvore_bfs.conexo()
                 )
 
-    def teste_ciclo(self):
-        graphListCiclo = [self.g_p, self.g_c, self.g_l5, self.g_p_sem_paralelas, self.grafo_atv]
-        graphListSemCiclo = [self.g_p_sem_ciclo, self.grafo_sem_ciclo]
+    def teste_caminho_true(self):
+        graphList = [(self.g_p, 8), (self.g_c, 5), (self.g_l5, 2), (self.g_p_sem_paralelas, 5),
+                     (self.grafo_atv, 17), (self.g_p_sem_ciclo, 3), (self.grafo_sem_ciclo, 4)]
 
-        for grafo in graphListCiclo:
-            for n in grafo.N:
-                print(grafo)
-                print(n)
-                arvoreDFS = grafo.nova_dfs(MeuGrafo([n]), n)
-                arvoreBFS = grafo.bfs(MeuGrafo([n]), n)
-                self.assertTrue(grafo.ha_ciclo2(MeuGrafo([]), n))
-                self.assertFalse(arvoreDFS.ha_ciclo2(MeuGrafo([]), n))
-                self.assertFalse(arvoreBFS.ha_ciclo2(MeuGrafo([]), n))
+        for grafo in graphList:
+            g = grafo[0]
+            c_max = grafo[1]
 
-        for grafoSemCiclo in graphListSemCiclo:
-            for n in grafoSemCiclo.N:
-                self.assertFalse(grafoSemCiclo.ha_ciclo2(MeuGrafo([]), n), grafoSemCiclo)
+            for i in range(0, c_max+1):
+                caminho_i = g.caminho(i)
+                self.assertTrue(g.caminho_no_grafo(caminho_i))
+                self.assertTrue((len(caminho_i)-1)/2 == i)
 
-    def test_eh_desconexo(self):
-        self.assertFalse(self.g_p.eh_desconexo())
-        self.assertFalse(self.g_p2.eh_desconexo())
-        self.assertTrue(self.g_d.eh_desconexo())
-        self.assertTrue(self.g_d2.eh_desconexo())
+    def teste_caminho_false(self):
+        graphList = [(self.g_p, 8), (self.g_c, 5), (self.g_l5, 2), (self.g_p_sem_paralelas, 5),
+                     (self.grafo_atv, 17), (self.g_p_sem_ciclo, 3), (self.grafo_sem_ciclo, 4)]
+
+        for grafo in graphList:
+            g = grafo[0]
+            c_excede= grafo[1]+1
+
+            self.assertFalse(g.caminho(c_excede))
+
+    def teste_ciclo_true(self):
+        graphList = [self.g_p, self.g_c, self.g_l5, self.g_p_sem_paralelas, self.grafo_atv]
+
+        for grafo in graphList:
+            ciclo = grafo.ha_ciclo()
+            self.assertTrue(grafo.caminho_no_grafo(ciclo))
+            self.assertTrue(ciclo[0] == ciclo[-1])
+
+    def teste_ciclo_false(self):
+        graphList = [self.g_p_sem_ciclo, self.grafo_sem_ciclo]
+
+        for grafo in graphList:
+            self.assertFalse(grafo.ha_ciclo())
+
+    def test_conexo(self):
+        self.assertTrue(self.g_p.conexo())
+        self.assertTrue(self.g_p2.conexo())
+        self.assertFalse(self.g_d.conexo())
+        self.assertFalse(self.g_d2.conexo())
 
     def teste_arestas_no_grafo(self):
         graphs = [self.g_p, self.g_c, self.g_l5, self.g_p_sem_paralelas, self.grafo_atv]
 
         for grafo in graphs:
             for r in grafo.N:
-                arvoreDFS = grafo.nova_dfs(MeuGrafo([r]), r)
-                arvoreBFS = grafo.bfs(MeuGrafo([r]), r)
+                arvoreDFS = grafo.dfs(r)
+                arvoreBFS = grafo.bfs(r)
                 self.assertTrue(grafo.arestas_no_grafo(arvoreDFS))
                 self.assertTrue(grafo.arestas_no_grafo(arvoreBFS))
                 self.assertFalse(arvoreDFS.arestas_no_grafo(grafo))

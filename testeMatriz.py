@@ -1,0 +1,83 @@
+from meu_grafo_matriz_adjacencia_nao_dir import MeuGrafo
+
+grafo_atv = MeuGrafo(list('ABCDEFGHIJK'))
+grafo_atv.adicionaAresta('a1', 'A', 'B')
+grafo_atv.adicionaAresta('a2', 'B', 'C')
+grafo_atv.adicionaAresta('a3', 'C', 'D')
+grafo_atv.adicionaAresta('a4', 'D', 'E')
+grafo_atv.adicionaAresta('a5', 'E', 'B')
+grafo_atv.adicionaAresta('a6', 'B', 'F')
+grafo_atv.adicionaAresta('a7', 'F', 'H')
+grafo_atv.adicionaAresta('a8', 'H', 'G')
+grafo_atv.adicionaAresta('a9', 'G', 'B')
+grafo_atv.adicionaAresta('a10', 'G', 'A')
+grafo_atv.adicionaAresta('a11', 'G', 'K')
+grafo_atv.adicionaAresta('a12', 'G', 'J')
+grafo_atv.adicionaAresta('a13', 'G', 'I')
+grafo_atv.adicionaAresta('a14', 'A', 'J')
+grafo_atv.adicionaAresta('a15', 'J', 'K')
+grafo_atv.adicionaAresta('a16', 'J', 'I')
+
+grafo_sem_ciclo = MeuGrafo(list('ABCDEFGHIJK'))
+grafo_sem_ciclo.adicionaAresta('a1', 'A', 'J')
+grafo_sem_ciclo.adicionaAresta('a2', 'A', 'G')
+grafo_sem_ciclo.adicionaAresta('a3', 'A', 'B')
+grafo_sem_ciclo.adicionaAresta('a4', 'J', 'K')
+grafo_sem_ciclo.adicionaAresta('a5', 'J', 'I')
+grafo_sem_ciclo.adicionaAresta('a6', 'G', 'H')
+grafo_sem_ciclo.adicionaAresta('a7', 'B', 'F')
+grafo_sem_ciclo.adicionaAresta('a8', 'B', 'C')
+grafo_sem_ciclo.adicionaAresta('a9', 'B', 'D')
+grafo_sem_ciclo.adicionaAresta('a10', 'B', 'E')
+
+paraiba = MeuGrafo(['J', 'C', 'E', 'P', 'M', 'T', 'Z'])
+paraiba.adicionaAresta('a1', 'J', 'C')
+paraiba.adicionaAresta('a2', 'C', 'E')
+paraiba.adicionaAresta('a3', 'C', 'E')
+paraiba.adicionaAresta('a4', 'P', 'C')
+paraiba.adicionaAresta('a5', 'P', 'C')
+paraiba.adicionaAresta('a6', 'T', 'C')
+paraiba.adicionaAresta('a7', 'M', 'C')
+paraiba.adicionaAresta('a8', 'M', 'T')
+paraiba.adicionaAresta('a9', 'T', 'Z')
+
+teste = MeuGrafo(list('ABCDEF'))
+teste.adicionaAresta('a1', 'B', 'A')
+teste.adicionaAresta('a2', 'A', 'C')
+teste.adicionaAresta('a3', 'A', 'D')
+teste.adicionaAresta('a4', 'D', 'E')
+teste.adicionaAresta('a5', 'E', 'F')
+teste.adicionaAresta('a6', 'F', 'A')
+teste.adicionaAresta('a7', 'A', 'A')
+
+desconexo = MeuGrafo(list('ABCDEF'))
+desconexo.adicionaAresta('a1', 'A', 'B')
+desconexo.adicionaAresta('a2', 'B', 'C')
+desconexo.adicionaAresta('a3', 'D', 'E')
+desconexo.adicionaAresta('a4', 'E', 'D')
+desconexo.adicionaAresta('a5', 'E', 'F')
+desconexo.adicionaAresta('a6', 'E', 'E')
+
+testen = MeuGrafo(list('1234'))
+testen.adicionaAresta('a1', '1', '2')
+testen.adicionaAresta('a2', '2', '3')
+testen.adicionaAresta('a3', '3', '4')
+testen.adicionaAresta('a4', '4', '1')
+testen.adicionaAresta('a5', '1', '4')
+testen.adicionaAresta('a6', '1', '1')
+testen.adicionaAresta('a7', '3', '3')
+testen.adicionaAresta('a8', '4', '4')
+
+
+grafos = [testen, desconexo, teste, paraiba, grafo_sem_ciclo, grafo_atv]
+
+for grafo in grafos:
+    #print(grafo.ha_laco())
+    #print(grafo.ha_paralelas())
+    #print(grafo.arestas_sobre_vertice(grafo.N[0]))
+    #print(grafo.vertices_nao_adjacentes())
+    #print(grafo.eh_completo())
+    grafo.nocao_matriz()
+
+
+

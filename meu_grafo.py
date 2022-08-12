@@ -4,6 +4,8 @@ from bibgrafo.grafo_exceptions import *
 from collections import Counter
 import random
 
+from sys import maxsize
+
 class MeuGrafo(GrafoListaAdjacencia):
 
     #Metodos Private
@@ -390,6 +392,47 @@ class MeuGrafo(GrafoListaAdjacencia):
         '''
         dfs = self.dfs()
         return set(dfs.N) == set(self.N)
+
+    def dijkstra(self, u, v):
+        if u not in self.N or v not in self.N:
+            raise VerticeInvalidoException("Vertíce Inválido!")
+
+        beta = {vertice: maxsize for vertice in self.N}
+        fi = {vertice: 0 for vertice in self.N}
+        pi = {vertice: '' for vertice in self.N}
+
+        beta[u] = 0
+
+        self.dijkstra_percorre(u, v, beta, fi, pi)
+        return self.reconstroe_caminho(v, pi)
+
+    def dijkstra_percorre(self, w, v, beta, fi, pi):
+        while w != v:
+            fi[w] = 1
+            for aresta in self.arestas_sobre_vertice(w):
+                oposto = self.vertice_oposto(aresta, w)
+                peso = self.getAresta(aresta).getPeso()
+                if beta[oposto] > (beta[w] + peso):
+                    beta[oposto] = beta[w] + peso
+                    pi[oposto] = w
+            w = self.menor_beta(beta, fi)
+
+    def menor_beta(self, beta, fi):
+        menor = maxsize
+        for vertice in beta:
+            if fi[vertice] == 0:
+                if beta[vertice] < menor:
+                    menor = beta[vertice]
+                    w = vertice
+        return w
+    def reconstroe_caminho(self, v, pi):
+        caminho = []
+        while True:
+            if pi[v] == '':
+                break
+            caminho.append(self.monta_aresta(v, pi[v]))
+            v = pi[v]
+        return caminho
 
     def dijkstra_drone(self, vi, vf, carga:int, carga_max:int, pontos_recarga:list()):
         pass

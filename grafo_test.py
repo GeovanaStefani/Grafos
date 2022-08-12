@@ -345,3 +345,17 @@ class TestGrafo(unittest.TestCase):
                 self.assertTrue(grafo.arestas_no_grafo(arvoreBFS))
                 self.assertFalse(arvoreDFS.arestas_no_grafo(grafo))
                 self.assertFalse(arvoreBFS.arestas_no_grafo(grafo))
+    def teste_dijkstra(self):
+        self.assertEqual(self.g_p.dijkstra('J', 'Z'), ['Z-T', 'T-C', 'C-J'])
+        self.assertEqual(self.g_p.dijkstra('P', 'Z'), ['Z-T', 'T-C', 'C-P'])
+        self.assertEqual(self.g_p.dijkstra('P', 'M'), ['M-C', 'C-P'])
+        self.assertEqual(self.grafo_atv.dijkstra('I', 'E'), ['E-B', 'B-G', 'G-I'])
+        self.assertEqual(self.grafo_atv.dijkstra('C', 'J'), ['J-A', 'A-B', 'B-C'])
+        self.assertEqual(self.grafo_atv.dijkstra('I', 'A'), ['A-G', 'G-I'])
+
+        with self.assertRaises(VerticeInvalidoException):
+            self.assertEqual(print(self.g_p.dijkstra('j', 'Z')), ['Z-T', 'T-C', 'C-J'])
+        with self.assertRaises(VerticeInvalidoException):
+            self.assertEqual(print(self.grafo_atv.dijkstra('I', 'e'), ['E-B', 'B-G', 'G-I']))
+
+

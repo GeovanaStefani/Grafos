@@ -397,11 +397,9 @@ class MeuGrafo(GrafoListaAdjacencia):
         if u not in self.N or v not in self.N:
             raise VerticeInvalidoException("Vertíce Inválido!")
 
-        beta = {vertice: maxsize for vertice in self.N}
+        beta = {vertice: maxsize if vertice != u else 0 for vertice in self.N}
         fi = {vertice: 0 for vertice in self.N}
         pi = {vertice: '' for vertice in self.N}
-
-        beta[u] = 0
 
         self.dijkstra_percorre(u, v, beta, fi, pi)
         return self.reconstroe_caminho(v, pi)
